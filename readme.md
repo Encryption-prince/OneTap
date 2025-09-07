@@ -1,4 +1,4 @@
-# OneTap 🚀
+# OneTap 👆➀ Photo
 
 **OneTap** is a **secure file-sharing application that allows users to send one-time viewable documents, photos, videos, audios, and PDFs**. This application aims to solve **the problem of privacy and security in digital file sharing, where recipients often keep permanent copies or take screenshots of sensitive files**.
 
