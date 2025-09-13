@@ -9,7 +9,7 @@
 - 🔐 **One-Time File Sharing:** Share files that can be opened only once before expiring.
 - 📵 **Screenshot Protection:** Prevent recipients from capturing or saving sensitive content (where supported).
 - 🛡️ **End-to-End Encryption:** Files are encrypted before storage and decrypted only at the recipient’s end.
-- 📦 **Scalable Architecture:** Built with **Docker Compose** for easy deployment and scaling.
+- 📦 **Scalable Architecture:** Built with **Docker** for easy deployment and scaling.
 - ⏳ **Automatic Expiry:** Files self-destruct after first access or after a set time.
 - 🌍 **Cross-Platform Sharing:** Works across devices and platforms, not tied to WhatsApp or any single app.
 
@@ -23,7 +23,7 @@
 | **Database** | PostgreSQL |
 | **Cache**    | Redis (temporary file storage) |
 | **Security** | AES-256 Encryption |
-| **Infra**    | Docker & Docker Compose |
+| **Infra**    | Docker |
 
 ---
 
@@ -39,7 +39,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 * PostgreSQL
 * Redis
 * AES-GCM Encryption 
-* Docker and Docker Compose (Optional, for containerized deployment)
+* Docker (Optional, for containerized deployment)
 
 ### Installation & Local Setup
 
@@ -69,10 +69,21 @@ Follow these instructions to get a copy of the project up and running on your lo
         ```
       *(Update `onetap-[version].jar` with the actual name of the generated JAR file in your `target` directory.)*
 
-    * **Using Docker Compose:**
-      This method builds the image from the Dockerfile and starts all necessary services defined in `docker-compose.yml`.
+    * **Using Docker (Cloud Redis):**
+      This method builds the image from the Dockerfile and runs with cloud-hosted Redis.
         ```sh
-        docker-compose up --build
+        # Build the image
+        docker build -t onetap:latest .
+        
+        # Run with environment variables
+        docker run -p 8080:8080 \
+          -e SPRING_REDIS_HOST=your-redis-host \
+          -e SPRING_REDIS_PASSWORD=your-redis-password \
+          -e SPRING_DATASOURCE_URL=your-db-url \
+          -e DB_USER=your-db-user \
+          -e DB_PASSWORD=your-db-password \
+          -e ENCRYPTION_KEY=your-encryption-key \
+          onetap:latest
         ```
 
 ## Usage : Visit `http://localhost:8080/swagger-ui/index.html` 
