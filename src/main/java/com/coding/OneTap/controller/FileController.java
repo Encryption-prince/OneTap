@@ -1,5 +1,7 @@
 package com.coding.OneTap.controller;
 
+import com.coding.OneTap.dto.FileResponse;
+import com.coding.OneTap.dto.FileWithExpiry;
 import com.coding.OneTap.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,17 +32,37 @@ public class FileController {
     @GetMapping("/view/{fileId}")
     public ResponseEntity<?> viewFile(@PathVariable UUID fileId) {
         try {
-            byte[] fileBytes = fileService.getFileOnce(fileId);
+            FileWithExpiry fileData = fileService.getFileOnce(fileId);
 
-            // We’ll return as application/octet-stream since content type is gone after retrieval
             return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=\"file.bin\"")
+                    .header("Content-Disposition", "inline; filename=\"file.bin\"")
                     .header("Content-Type", "application/octet-stream")
-                    .body(fileBytes);
+                    .header("X-Expiry-Seconds", String.valueOf(fileData.getExpirySeconds()))
+                    .body(fileData.getFileBytes());
 
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+
+//    @GetMapping("/view/{fileId}")
+//    public ResponseEntity<?> viewFile(@PathVariable UUID fileId) {
+//        try {
+//            byte[] fileBytes = fileService.getFileOnce(fileId);
+////            FileResponse response = fileService.getFileOnceWithExpiry(fileId);
+//
+//            // We’ll return as application/octet-stream since content type is gone after retrieval
+//            return ResponseEntity.ok()
+//                    .header("Content-Disposition", "inline; filename=\"file.bin\"")
+//                    .header("Content-Type", "application/octet-stream")
+////                    .header("Content-Type", "application/json")
+////                    .body(response);
+//                    .body(fileBytes);
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(404).body(e.getMessage());
+//        }
+//    }
 
 }
